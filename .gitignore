@@ -3,3 +3,8 @@
 # Python Cache
 __pycache__/
 *.py[cod]
+.env
+backend/.env
+#uploaded datasets 
+backend/app/storage/uploads/
+backend/app/storage/processed/

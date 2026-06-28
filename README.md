@@ -17,3 +17,8 @@ An AI-powered web application that analyzes uploaded datasets, generates busines
 - Project initialized
 - Backend configured
 - FastAPI running
+
+✅ Sprint 2 Completed
+
+- Completed data preprocessing pipeline
+- Integrated Gemini Api 
