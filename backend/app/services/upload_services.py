@@ -9,6 +9,10 @@ from app.services.analysis_services import analyze_dataset
 from app.services.ai_planner_services import generate_preprocessing_plan  
 from app.services.preprocessing_executor import execute_preprocessing_plan  
 from app.core.paths import PROCESSED_DIR
+from app.services.visualization_planner_services import generate_visualization_plan
+from app.services.visualization_executor import execute_visualization_plan
+from app.services.session_services import (reset_context, update_context, get_context)
+
 
 ALLOWED_EXTENSIONS = {".csv"}
 
@@ -22,19 +26,30 @@ UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 def process_uploaded_file(file : UploadFile):
     
+    reset_context()
     _validate_file(file)
     
     file_path, unique_filename = _save_file(file)
     df = _read_csv(file_path)
     df = clean_dataset(df)
-    analysis = analyze_dataset(df)
-    preprocessing_plan = generate_preprocessing_plan(analysis)
+    original_metadata  = analyze_dataset(df)
+    update_context("original_metadata", original_metadata)
+    preprocessing_plan = generate_preprocessing_plan(original_metadata )
+    update_context("preprocessing_plan", preprocessing_plan )
     df = execute_preprocessing_plan(df, preprocessing_plan)
     processed_file_path=_save_processed_file(df, unique_filename)
+    cleaned_metadata=analyze_dataset(df)
+    update_context("cleaned_metadata", cleaned_metadata )
+    visualization_plan=generate_visualization_plan(cleaned_metadata)
+    update_context("visualization_plan", visualization_plan )
+    generated_plots=execute_visualization_plan(df,visualization_plan)
+    update_context("generated_plots", generated_plots )
     return {
-        "message": "Dataset uploaded and preprocessed successfully.",
+    "message": "Dataset uploaded and preprocessed successfully.",
     "processed_filename": unique_filename,
-    "preprocessing_report": preprocessing_plan
+    "preprocessing_report": preprocessing_plan,
+    "visualization_plan":visualization_plan,
+    "generated_plots": generated_plots
     }
     
 def _validate_file(file: UploadFile):

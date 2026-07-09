@@ -8,18 +8,16 @@ An AI-powered web application that automates dataset preprocessing using Large L
 
 ### Current Features
 
+## Features
+
 - Upload CSV datasets
-- Automatic dataset cleaning
-- AI-generated preprocessing plan using Gemini
-- Automatic execution of preprocessing operations
-- Missing value handling
-- Data type conversion
-- Column removal
-- Sparse row and column removal
-- Outlier removal
-- Feature engineering support
+- AI-powered data cleaning
+- Automatic preprocessing
 - Download cleaned dataset
-- React frontend integrated with FastAPI backend
+- AI-recommended visualizations
+- Automatic chart generation
+- Interactive React frontend
+- Analysis session context for future AI chat and business insights
 
 ---
 
@@ -76,12 +74,19 @@ An AI-powered web application that automates dataset preprocessing using Large L
 - Display AI preprocessing operations
 - Download processed dataset
 
+### ✅ Sprint 4 Completed
+
+- AI-powered visualization planner
+- Automatic chart generation
+- Histogram, Bar, Scatter, Boxplot, Line, Heatmap, and Pie charts
+- React plot gallery
+- AI-generated axis labels and categorical value labels
+- Analysis session context for storing metadata, preprocessing, visualizations, and plots
+
 ---
 
 ## 📌 Upcoming Features
 
-- Automated Exploratory Data Analysis (EDA)
-- Interactive data visualizations
 - AI-generated business insights
 - Chat with your dataset using LLMs
 - Memory-enabled AI assistant

@@ -1,0 +1,342 @@
+import re
+from pathlib import Path
+import matplotlib.pyplot as plt
+import pandas as pd
+from app.core.paths import PLOTS_DIR
+
+
+def execute_visualization_plan(df: pd.DataFrame, visualization_plan: dict):
+
+    PLOTS_DIR.mkdir(parents=True, exist_ok=True)
+
+    generated_plots = []
+
+    for plot in visualization_plan["plots"]:
+
+        plot_type = plot["type"]
+
+        try:
+
+            if plot_type == "histogram":
+                generated_plots.append(_generate_histogram(df, plot))
+
+            elif plot_type == "bar":
+                generated_plots.append(_generate_bar(df, plot))
+
+            elif plot_type == "scatter":
+                generated_plots.append(_generate_scatter(df, plot))
+                
+            elif plot_type == "boxplot":
+                generated_plots.append(_generate_boxplot(df, plot))
+                
+            elif plot_type == "line":
+                generated_plots.append(_generate_line(df, plot))
+                
+            elif plot_type == "heatmap":
+                generated_plots.append(_generate_heatmap(df, plot))
+                
+            elif plot_type == "pie":
+                generated_plots.append(_generate_pie(df, plot))
+
+        except Exception as e:
+            print(f"Failed to generate {plot_type}: {e}")
+
+    return generated_plots
+
+def _get_filename(title: str):
+
+    filename = re.sub(r"[^a-zA-Z0-9]+", "_", title.lower())
+
+    return PLOTS_DIR / f"{filename}.png"
+
+def _apply_axis_labels(plot, default_x=None, default_y=None):
+
+    plt.xlabel(plot.get("x_label", default_x if default_x else ""))
+    plt.ylabel(plot.get("y_label", default_y if default_y else ""))
+
+def _apply_value_labels(plot, values):
+
+    if "value_labels" not in plot:
+        return
+
+    mapping = plot["value_labels"]
+
+    labels = [
+        mapping.get(str(value), str(value))
+        for value in values
+    ]
+
+    plt.xticks(
+        ticks=range(len(values)),
+        labels=labels
+    )
+def _build_response(plot, file_path):
+
+    return {
+        "type": plot["type"],
+        "title": plot["title"],
+        "path": f"/storage/plots/{file_path.name}",
+        "reason": plot["reason"],
+        "priority": plot["priority"],
+        "insight": plot.get("insight", "")
+    }
+
+def _generate_histogram(df, plot):
+
+    x = plot["x"]
+    title = plot["title"]
+
+    file_path = _get_filename(title)
+
+    plt.figure(figsize=(8, 5))
+
+    df[x].dropna().hist(bins=20)
+
+    plt.title(title)
+    _apply_axis_labels(
+    plot,
+    default_x=x,
+    default_y="Frequency"
+)
+
+    plt.tight_layout()
+
+    plt.savefig(file_path)
+    plt.close()
+
+    return _build_response(plot, file_path)
+    
+def _generate_bar(df, plot):
+
+    x = plot["x"]
+    title = plot["title"]
+    aggregation = plot["aggregation"]
+
+    file_path = _get_filename(title)
+
+    plt.figure(figsize=(8, 5))
+
+    if aggregation == "count":
+
+        df[x].value_counts().plot(kind="bar")
+
+    else:
+
+        y = plot["y"]
+
+        (
+            df.groupby(x)[y]
+            .agg(aggregation)
+            .plot(kind="bar")
+        )
+
+    plt.title(title)
+    _apply_axis_labels(
+    plot,
+    default_x=x,
+    default_y=aggregation.capitalize()
+    )
+    
+    if aggregation == "count":
+        values = df[x].value_counts().index
+    else:
+        values = (
+        df.groupby(x)[y]
+        .agg(aggregation)
+        .index
+        )
+    _apply_value_labels(plot, values)
+    
+
+    plt.tight_layout()
+
+    plt.savefig(file_path)
+    plt.close()
+
+    return _build_response(plot, file_path)
+
+def _generate_scatter(df, plot):
+
+    x = plot["x"]
+    y = plot["y"]
+    title = plot["title"]
+
+    file_path = _get_filename(title)
+
+    data = df[[x, y]].dropna()
+
+    plt.figure(figsize=(8, 5))
+
+    plt.scatter(data[x], data[y], alpha=0.7)
+
+    plt.title(title)
+    _apply_axis_labels(
+    plot,
+    default_x=x,
+    default_y=y
+)
+
+    plt.tight_layout()
+
+    plt.savefig(file_path)
+    plt.close()
+
+    return _build_response(plot, file_path)
+
+def _generate_boxplot(df, plot):
+
+    title = plot["title"]
+    y = plot["y"]
+
+    file_path = _get_filename(title)
+
+    plt.figure(figsize=(8, 5))
+
+    if "x" in plot:
+        x = plot["x"]
+        df.boxplot(column=y, by=x)
+        plt.suptitle("")
+        _apply_axis_labels(
+          plot,
+          default_x=x,
+          default_y=y
+        )
+    else:
+        df.boxplot(column=y)
+        _apply_axis_labels(
+        plot,
+        default_x="",
+        default_y=y
+        )
+
+    plt.title(title)
+    plt.ylabel(y)
+
+    plt.tight_layout()
+
+    plt.savefig(file_path)
+    plt.close()
+
+    return _build_response(plot, file_path)
+    
+def _generate_line(df, plot):
+
+    x = plot["x"]
+    y = plot["y"]
+    title = plot["title"]
+
+    aggregation = plot["aggregation"]
+
+    file_path = _get_filename(title)
+
+    plt.figure(figsize=(8, 5))
+
+    if aggregation == "none":
+
+        plt.plot(df[x], df[y])
+
+    else:
+
+        (
+            df.groupby(x)[y]
+            .agg(aggregation)
+            .sort_index()
+            .plot(marker="o")
+        )
+
+    plt.title(title)
+    _apply_axis_labels(
+    plot,
+    default_x=x,
+    default_y=y
+)
+
+    plt.tight_layout()
+
+    plt.savefig(file_path)
+    plt.close()
+
+    return _build_response(plot, file_path)
+
+def _generate_pie(df, plot):
+
+    x = plot["x"]
+    title = plot["title"]
+
+    file_path = _get_filename(title)
+
+    plt.figure(figsize=(7, 7))
+
+    (
+        df[x]
+        .value_counts()
+        .head(8)
+        .plot(
+            kind="pie",
+            autopct="%1.1f%%"
+        )
+    )
+
+    _apply_axis_labels(
+    plot,
+    default_x="",
+    default_y=""
+)
+    plt.title(title)
+
+    plt.tight_layout()
+
+    plt.savefig(file_path)
+    plt.close()
+
+    return _build_response(plot, file_path)
+    
+def _generate_heatmap(df, plot):
+
+    title = plot["title"]
+
+    file_path = _get_filename(title)
+
+    if "columns" in plot:
+
+        corr = df[plot["columns"]].corr()
+
+    else:
+
+        corr = df.select_dtypes(include="number").corr()
+
+    plt.figure(figsize=(8, 6))
+
+    plt.imshow(
+    corr,
+    cmap="coolwarm",
+    interpolation="nearest"
+)
+
+    plt.colorbar()
+
+    plt.xticks(
+        range(len(corr.columns)),
+        corr.columns,
+        rotation=90
+    )
+
+    plt.yticks(
+        range(len(corr.columns)),
+        corr.columns
+    )
+
+    plt.title(title)
+    
+    _apply_axis_labels(
+    plot,
+    default_x="Features",
+    default_y="Features"
+)
+
+    plt.tight_layout()
+
+    plt.savefig(file_path)
+    plt.close()
+
+    return _build_response(plot, file_path)

@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.upload import router as upload_router
 from app.api.download import router as download_router
+from fastapi.staticfiles import StaticFiles
+
 app = FastAPI()
 
 app.add_middleware(
@@ -23,3 +25,4 @@ def home():
         "message":"App backend is running   !"
     }
     
+app.mount("/storage", StaticFiles(directory="storage"), name="storage")
