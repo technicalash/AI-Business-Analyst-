@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { uploadDataset } from "../services/api";
 
-function UploadBox({ report, setReport, setPlots }) {
+function UploadBox({ report, setReport, setPlots, setInsights }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -21,6 +21,7 @@ function UploadBox({ report, setReport, setPlots }) {
       const response = await uploadDataset(selectedFile);
       setReport(response);
       setPlots(response.generated_plots);
+      setInsights(response.insights);
     } catch (error) {
       setError("Upload failed.");
     } finally {
