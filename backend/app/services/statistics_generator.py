@@ -230,21 +230,12 @@ def _line_statistics(df, plot):
     end_value = float(grouped.iloc[-1])
 
     if start_value != 0:
-        percent_change = (
+        change_from_first_to_last = (
             (end_value - start_value)
             / start_value
         ) * 100
     else:
-        percent_change = 0
-
-    if percent_change > 5:
-        trend = "Increasing"
-
-    elif percent_change < -5:
-        trend = "Decreasing"
-
-    else:
-        trend = "Stable"
+        change_from_first_to_last = 0
 
     statistics = {
         "x_axis": x,
@@ -256,8 +247,8 @@ def _line_statistics(df, plot):
         "max": round(float(grouped.max()), 3),
         "mean": round(float(grouped.mean()), 3),
         "median": round(float(grouped.median()), 3),
-        "percent_change": round(percent_change, 2),
-        "trend": trend
+        "std": round(float(grouped.std()), 3),
+        "change_from_first_to_last": round(change_from_first_to_last, 2)
     }
 
     return _build_statistics(

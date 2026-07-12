@@ -13,8 +13,8 @@ backend/storage/uploads/*
 !backend/storage/uploads/.gitkeep
 backend/storage/processed/*
 !backend/storage/processed/.gitkeep
-# backend/storage/plots/*
-# !backend/storage/plots/.gitkeep
+backend/storage/plots/*
+!backend/storage/plots/.gitkeep
 
 # React
 frontend/node_modules/

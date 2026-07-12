@@ -14,7 +14,7 @@ from app.services.visualization_executor import execute_visualization_plan
 from app.services.session_services import (reset_context, update_context, get_context)
 from app.services.statistics_generator import generate_plot_statistics
 from app.services.insight_generator import generate_insights
-
+from app.services.recommendation_generator import generate_recommendations
 
 ALLOWED_EXTENSIONS = {".csv"}
 
@@ -50,6 +50,8 @@ def process_uploaded_file(file : UploadFile):
     update_context("plot_statistics", plot_statistics)
     insights=generate_insights(cleaned_metadata, plot_statistics)
     update_context("insights", insights)
+    recommendations=generate_recommendations(cleaned_metadata, insights)
+    update_context("recommendations", recommendations)
     return {
     "message": "Dataset uploaded and preprocessed successfully.",
     "processed_filename": unique_filename,
@@ -57,7 +59,8 @@ def process_uploaded_file(file : UploadFile):
     "visualization_plan":visualization_plan,
     "generated_plots": generated_plots,
     "plot_statistics": plot_statistics,
-    "insights": insights
+    "insights": insights,
+    "recommendations":recommendations
     }
     
 def _validate_file(file: UploadFile):

@@ -1,29 +1,35 @@
 # AI Business Analyst
 
-An AI-powered web application that automates dataset preprocessing using Large Language Models. Users can upload CSV datasets, receive an AI-generated preprocessing plan, automatically clean their data, and download the processed dataset. The project is being developed incrementally into a complete AI Business Analyst capable of performing exploratory data analysis, generating business insights, creating visualizations, and enabling conversational data analysis.
+An AI-powered web application that automates dataset preprocessing, visualization, insight generation, and business recommendations using Large Language Models. Users can upload CSV datasets, receive an AI-generated preprocessing plan, automatically clean their data, generate visualizations, obtain AI-powered business insights and recommendations, and download the processed dataset.
+
+The project is being developed incrementally into a complete AI Business Analyst capable of conversational data analysis and intelligent business decision support.
 
 ---
 
-## 🚀 Features
+# 🚀 Features
 
-### Current Features
-
-## Features
+## Current Features
 
 - Upload CSV datasets
 - AI-powered data cleaning
 - Automatic preprocessing
 - Download cleaned dataset
-- AI-recommended visualizations
+- AI-generated preprocessing report
+- AI-powered visualization planning
 - Automatic chart generation
+- Histogram, Bar, Scatter, Boxplot, Line, Heatmap, and Pie charts
+- Automatic plot statistics generation
+- AI-generated business insights
+- AI-generated business recommendations
 - Interactive React frontend
-- Analysis session context for future AI chat and business insights
+- Responsive UI built with Tailwind CSS
+- Analysis session context for future AI chat
 
 ---
 
-## 🛠 Tech Stack
+# 🛠 Tech Stack
 
-### Backend
+## Backend
 
 - FastAPI
 - Pandas
@@ -31,25 +37,28 @@ An AI-powered web application that automates dataset preprocessing using Large L
 - Google Gemini API
 - Python
 
-### Frontend
+## Frontend
 
 - React
 - Vite
+- Tailwind CSS
 - Axios
 - JavaScript
 
 ---
 
-## 📂 Project Status
+# 📂 Project Status
 
-### ✅ Sprint 0 — Project Setup
+## ✅ Sprint 0 — Project Setup
 
 - Project initialized
 - Backend configured
 - FastAPI server setup
 - Project structure created
 
-### ✅ Sprint 1 — Dataset Processing
+---
+
+## ✅ Sprint 1 — Dataset Processing
 
 - CSV upload system
 - Dataset validation
@@ -57,7 +66,9 @@ An AI-powered web application that automates dataset preprocessing using Large L
 - Dataset analysis
 - Metadata generation
 
-### ✅ Sprint 2 — AI Preprocessing Pipeline
+---
+
+## ✅ Sprint 2 — AI Preprocessing Pipeline
 
 - Gemini API integration
 - AI preprocessing planner
@@ -65,36 +76,56 @@ An AI-powered web application that automates dataset preprocessing using Large L
 - Processed dataset storage
 - Cleaning report generation
 
-### ✅ Sprint 3 — Frontend Integration
+---
+
+## ✅ Sprint 3 — Frontend Integration
 
 - React frontend setup
 - FastAPI integration using Axios
 - File upload interface
 - Loading and error handling
-- Display AI preprocessing operations
+- Display preprocessing operations
 - Download processed dataset
 
-### ✅ Sprint 4 Completed
+---
+
+## ✅ Sprint 4 — AI Visualization Pipeline
 
 - AI-powered visualization planner
-- Automatic chart generation
+- Automatic visualization generation
 - Histogram, Bar, Scatter, Boxplot, Line, Heatmap, and Pie charts
-- React plot gallery
-- AI-generated axis labels and categorical value labels
-- Analysis session context for storing metadata, preprocessing, visualizations, and plots
+- Plot statistics generation
+- React visualization gallery
+- AI-generated axis labels
+- Analysis session context for metadata, preprocessing, visualizations, and plots
 
 ---
 
-## 📌 Upcoming Features
+## ✅ Sprint 5 — AI Business Intelligence
 
 - AI-generated business insights
-- Chat with your dataset using LLMs
-- Memory-enabled AI assistant
-- Dashboard for dataset analytics
-- Export reports and visualizations
+- AI-generated business recommendations
+- Insight generation from metadata and visualization statistics
+- Recommendation generation based on insights
+- React insight dashboard
+- React recommendation dashboard
+- Responsive UI using Tailwind CSS
 
 ---
 
-## 🎯 Goal
+# 📌 Planned Features (Version 2)
 
-The objective of this project is to build an AI-powered Business Analyst capable of automatically understanding datasets, cleaning data, performing exploratory data analysis, generating visualizations, producing business insights, and answering user questions about uploaded data through natural language.
+- Chat with your dataset using LLMs
+- Conversational AI Business Analyst
+- Memory-enabled AI assistant
+- Interactive analytics dashboard
+- Export complete business reports (PDF)
+- User authentication and project management
+- Multiple dataset support
+- Advanced statistical analysis
+
+---
+
+# 🎯 Goal
+
+The objective of this project is to build an AI-powered Business Analyst capable of automatically understanding datasets, cleaning data, performing exploratory data analysis, generating visualizations, producing business insights, recommending actionable business decisions, and answering user questions about uploaded datasets through natural language.

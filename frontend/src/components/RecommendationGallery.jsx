@@ -1,14 +1,18 @@
 import { useState } from "react";
 
-function InsightGallery({ insights }) {
-  const [showInsight, setShowInsight] = useState(false);
+function RecommendationGallery({ recommendations }) {
+  const [showRecommendations, setShowRecommendations] = useState(false);
 
-  if (!insights || !insights.insights || insights.insights.length === 0) {
+  if (
+    !recommendations ||
+    !recommendations.recommendations ||
+    recommendations.recommendations.length === 0
+  ) {
     return null;
   }
 
-  const badgeColor = (importance) => {
-    switch (importance) {
+  const badgeColor = (priority) => {
+    switch (priority) {
       case "High":
         return "bg-red-100 text-red-700";
 
@@ -23,16 +27,16 @@ function InsightGallery({ insights }) {
   return (
     <div className="bg-white rounded-2xl shadow-lg p-8">
       <h2 className="text-3xl font-bold text-gray-800">
-        🧠 AI Business Insights
+        💡 AI Recommendations
       </h2>
 
       <p className="text-gray-500 mt-2 mb-6">
-        These insights were automatically generated using AI after analyzing
-        your dataset.
+        These recommendations are generated using AI based on the insights
+        extracted from your dataset.
       </p>
 
       <button
-        onClick={() => setShowInsight(!showInsight)}
+        onClick={() => setShowRecommendations(!showRecommendations)}
         className="
           w-full
           bg-blue-600
@@ -44,12 +48,12 @@ function InsightGallery({ insights }) {
           transition
         "
       >
-        {showInsight ? "Hide Insights" : "View Insights"}
+        {showRecommendations ? "Hide Recommendations" : "View Recommendations"}
       </button>
 
-      {showInsight && (
+      {showRecommendations && (
         <div className="mt-8 space-y-6">
-          {insights.insights.map((insight, index) => (
+          {recommendations.recommendations.map((recommendation, index) => (
             <div
               key={index}
               className="
@@ -72,26 +76,36 @@ function InsightGallery({ insights }) {
                   rounded-full
                   text-sm
                   font-semibold
-                  ${badgeColor(insight.importance)}
+                  ${badgeColor(recommendation.priority)}
                 `}
               >
-                {insight.importance} Priority
+                {recommendation.priority} Priority
               </span>
 
               <h3 className="text-2xl font-bold mt-4 text-gray-800">
-                {insight.title}
+                {recommendation.title}
               </h3>
 
               <div className="mt-5">
-                <h4 className="font-semibold text-blue-600">Description</h4>
+                <h4 className="font-semibold text-blue-600">Recommendation</h4>
 
-                <p className="text-gray-700 mt-2">{insight.description}</p>
+                <p className="text-gray-700 mt-2">
+                  {recommendation.recommendation}
+                </p>
               </div>
 
               <div className="mt-5">
-                <h4 className="font-semibold text-blue-600">Evidence</h4>
+                <h4 className="font-semibold text-blue-600">Why?</h4>
 
-                <p className="text-gray-700 mt-2">{insight.evidence}</p>
+                <p className="text-gray-700 mt-2">{recommendation.reason}</p>
+              </div>
+
+              <div className="mt-5">
+                <h4 className="font-semibold text-blue-600">Business Impact</h4>
+
+                <p className="text-gray-700 mt-2">
+                  {recommendation.expected_impact}
+                </p>
               </div>
             </div>
           ))}
@@ -101,4 +115,4 @@ function InsightGallery({ insights }) {
   );
 }
 
-export default InsightGallery;
+export default RecommendationGallery;
