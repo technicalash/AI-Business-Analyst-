@@ -13,3 +13,7 @@ export async function uploadDataset(file){
 export function downloadDataset(filename) {
     window.open(`http://127.0.0.1:8000/download/${filename}`); //directly download the file in browser 
 }
+
+export function downloadReport(filename) {
+    window.open(`http://127.0.0.1:8000/download-report/${filename}`);
+  }

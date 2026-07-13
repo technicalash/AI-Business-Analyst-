@@ -21,6 +21,7 @@ The project is being developed incrementally into a complete AI Business Analyst
 - Automatic plot statistics generation
 - AI-generated business insights
 - AI-generated business recommendations
+- Download complete AI analysis report as PDF
 - Interactive React frontend
 - Responsive UI built with Tailwind CSS
 - Analysis session context for future AI chat
@@ -110,6 +111,7 @@ The project is being developed incrementally into a complete AI Business Analyst
 - React insight dashboard
 - React recommendation dashboard
 - Responsive UI using Tailwind CSS
+- PDF report generation and download
 
 ---
 
@@ -119,7 +121,6 @@ The project is being developed incrementally into a complete AI Business Analyst
 - Conversational AI Business Analyst
 - Memory-enabled AI assistant
 - Interactive analytics dashboard
-- Export complete business reports (PDF)
 - User authentication and project management
 - Multiple dataset support
 - Advanced statistical analysis

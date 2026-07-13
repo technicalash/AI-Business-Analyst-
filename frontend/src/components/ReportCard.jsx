@@ -1,4 +1,5 @@
 import { downloadDataset } from "../services/api";
+import { downloadReport } from "../services/api";
 import { useState } from "react";
 
 function ReportCard({ report }) {
@@ -73,6 +74,22 @@ function ReportCard({ report }) {
       "
       >
         ⬇ Download Cleaned Dataset
+      </button>
+      <button
+        onClick={() => downloadReport(report.report_filename)}
+        className="
+        mt-4
+        w-full
+        bg-green-600
+        hover:bg-green-700
+        text-white
+        py-3
+        rounded-xl
+        font-semibold
+        transition
+      "
+      >
+        📄 Download AI Report
       </button>
     </div>
   );

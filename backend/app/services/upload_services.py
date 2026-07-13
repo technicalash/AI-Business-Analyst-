@@ -15,6 +15,7 @@ from app.services.session_services import (reset_context, update_context, get_co
 from app.services.statistics_generator import generate_plot_statistics
 from app.services.insight_generator import generate_insights
 from app.services.recommendation_generator import generate_recommendations
+from app.services.report_generator import generate_pdf_report
 
 ALLOWED_EXTENSIONS = {".csv"}
 
@@ -52,6 +53,7 @@ def process_uploaded_file(file : UploadFile):
     update_context("insights", insights)
     recommendations=generate_recommendations(cleaned_metadata, insights)
     update_context("recommendations", recommendations)
+    report_pdf = generate_pdf_report(cleaned_metadata, preprocessing_plan, generated_plots, insights, recommendations)
     return {
     "message": "Dataset uploaded and preprocessed successfully.",
     "processed_filename": unique_filename,
@@ -60,7 +62,8 @@ def process_uploaded_file(file : UploadFile):
     "generated_plots": generated_plots,
     "plot_statistics": plot_statistics,
     "insights": insights,
-    "recommendations":recommendations
+    "recommendations":recommendations,
+    "report_filename": report_pdf["filename"]
     }
     
 def _validate_file(file: UploadFile):
