@@ -34,9 +34,9 @@ def process_uploaded_file(file : UploadFile):
     
     file_path, unique_filename = _save_file(file)
     df = _read_csv(file_path)
-    df = clean_dataset(df)
     original_metadata  = analyze_dataset(df)
     update_context("original_metadata", original_metadata)
+    df = clean_dataset(df)
     preprocessing_plan = generate_preprocessing_plan(original_metadata )
     update_context("preprocessing_plan", preprocessing_plan )
     df = execute_preprocessing_plan(df, preprocessing_plan)

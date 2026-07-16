@@ -110,7 +110,7 @@ def _remove_sparse_rows(df, parameters):
 
     minimum_non_null = int((1 - threshold) * len(df.columns))
 
-    df = df.dropna(thresh=minimum_non_null)
+    df = df.dropna(thresh=minimum_non_null) #remove rows where non null values are less than minimum_non_null
 
     return df
 

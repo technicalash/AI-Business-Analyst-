@@ -27,6 +27,22 @@ def _apply_value_labels(values, plot):
         ] = value
 
     return labeled
+def _calculate_outlier_count(data):
+
+    q1 = data.quantile(0.25)
+    q3 = data.quantile(0.75)
+
+    iqr = q3 - q1
+
+    lower_bound = q1 - 1.5 * iqr
+    upper_bound = q3 + 1.5 * iqr
+
+    outliers = data[
+        (data < lower_bound) |
+        (data > upper_bound)
+    ]
+
+    return int(outliers.count())
 
 
 def generate_plot_statistics(
@@ -76,6 +92,9 @@ def _histogram_statistics(df, plot):
     "median": round(float(data.median()),3),
     "std": round(float(data.std()),3),
     "min": round(float(data.min()),3),
+    "q1": round(float(data.quantile(0.25)), 3),
+    "q3": round(float(data.quantile(0.75)), 3),
+    "iqr": round(float(data.quantile(0.75) - data.quantile(0.25)), 3),
     "max": round(float(data.max()),3)
     }
     return _build_statistics(
@@ -121,13 +140,15 @@ def _scatter_statistics(df, plot):
     y = plot["y"]
 
     correlation = df[x].corr(df[y])
+    count = int(df[[x, y]].dropna().shape[0])
 
     return _build_statistics(
     plot,
     {
         "x": x,
         "y": y,
-        "correlation": round(float(correlation), 3)
+        "correlation": round(float(correlation), 3),
+        "count":count
     }
 )
     
@@ -144,7 +165,8 @@ def _boxplot_statistics(df, plot):
         "median": round(float(data.median()), 3),
         "q3": round(float(data.quantile(0.75)), 3),
         "max": round(float(data.max()), 3),
-        "iqr": round(float(data.quantile(0.75) - data.quantile(0.25)), 3)
+        "iqr": round(float(data.quantile(0.75) - data.quantile(0.25)), 3),
+        "outlier_count": _calculate_outlier_count(data)
     }
 
     if "x" in plot:
@@ -164,9 +186,13 @@ def _boxplot_statistics(df, plot):
             grouped_statistics[label] = {
                 "count": int(values.count()),
                 "mean": round(float(values.mean()), 3),
+                "q1": round(float(values.quantile(0.25)), 3),
                 "median": round(float(values.median()), 3),
+                "q3": round(float(values.quantile(0.75)), 3),
+                "iqr": round(float(values.quantile(0.75) - values.quantile(0.25)), 3),
                 "min": round(float(values.min()), 3),
-                "max": round(float(values.max()), 3)
+                "max": round(float(values.max()), 3),
+                "outlier_count": _calculate_outlier_count(values)
             }
 
         statistics["group_statistics"] = grouped_statistics
@@ -248,7 +274,9 @@ def _line_statistics(df, plot):
         "mean": round(float(grouped.mean()), 3),
         "median": round(float(grouped.median()), 3),
         "std": round(float(grouped.std()), 3),
-        "change_from_first_to_last": round(change_from_first_to_last, 2)
+        "change_from_first_to_last": round(change_from_first_to_last, 2),
+        "max_point": grouped.idxmax(),
+        "min_point": grouped.idxmin()
     }
 
     return _build_statistics(

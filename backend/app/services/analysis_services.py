@@ -44,13 +44,15 @@ def _get_column_info(df: pd.DataFrame):
             "sample_values": series.dropna().head(5).tolist()
         }
 
-        if pd.api.types.is_numeric_dtype(series):
+        if pd.api.types.is_numeric_dtype(series): #checks if series contains numeric datatype 
 
             info["statistics"] = {
                 "min": float(series.min()),
                 "max": float(series.max()),
                 "mean": float(series.mean()),
+                "q1": float(series.quantile(0.25)),
                 "median": float(series.median()),
+                "q3": float(series.quantile(0.75)),
                 "std": float(series.std())
             }
 
